@@ -1,0 +1,6 @@
+---
+  - hosts: all
+    tasks:
+     - name: Check server hostname 
+       command: hostname
+
