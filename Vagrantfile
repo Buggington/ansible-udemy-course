@@ -37,6 +37,8 @@ EOF
   config.vm.define "lb01" do |h|
     h.vm.network "private_network", ip: "192.168.135.101"
     h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, inline: 'useradd ansible'
+    h.vm.provision :shell, inline: 'echo "ansible	ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers'
   end
 
   config.vm.define "app01" do |h|
