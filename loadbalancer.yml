@@ -7,3 +7,15 @@
 
     - name: Ensure nginx is started
       service: name=nginx state=started enabled=yes
+
+    - name: Configure Nginx 2 backend
+      template: src=template/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644
+      notify:  restart nginx
+
+    - name: Activate nginx backend
+      file: src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link mode=0644
+      notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
