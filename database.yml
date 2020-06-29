@@ -3,7 +3,7 @@
   become: true
   tasks:
     - name: Install mysql-server
-      yum: name=mysql-server state=present
+      apt: name=mysql-server state=present
 
     - name: Ensure services are started and enabled
       service: name=mysql state=started enabled=yes
