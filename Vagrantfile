@@ -15,15 +15,16 @@ Vagrant.configure(2) do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
-  config.vm.box = "centos/7"
+  config.vm.box = "ubuntu/trusty64"
 
-config.vm.define "control", primary: true do |h|
+  config.vm.define "control", primary: true do |h|
     h.vm.network "private_network", ip: "192.168.135.10"
     h.vm.provision :shell, :inline => <<'EOF'
+
 if [ ! -f "/home/vagrant/.ssh/id_rsa" ]; then
   ssh-keygen -t rsa -N "" -f /home/vagrant/.ssh/id_rsa
 fi
-cp /home/vagrant/.ssh/id_rsa.pub /vagrant/control.pub
+cp /home/vagrant/.ssh/id_rsa.pub /vagrant/id_rsa.pub
 
 cat << 'SSHEOF' > /home/vagrant/.ssh/config
 Host *
@@ -33,26 +34,26 @@ SSHEOF
 
 chown -R vagrant:vagrant /home/vagrant/.ssh/
 EOF
-  end 
- 
+  end
+
   config.vm.define "lb01" do |h|
     h.vm.network "private_network", ip: "192.168.135.101"
-    h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
   end
 
   config.vm.define "app01" do |h|
     h.vm.network "private_network", ip: "192.168.135.111"
-    h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
   end
 
   config.vm.define "app02" do |h|
     h.vm.network "private_network", ip: "192.168.135.112"
-    h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
   end
 
   config.vm.define "db01" do |h|
     h.vm.network "private_network", ip: "192.168.135.121"
-    h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
   end
 end
 

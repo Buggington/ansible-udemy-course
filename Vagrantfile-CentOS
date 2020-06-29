@@ -15,9 +15,9 @@ Vagrant.configure(2) do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
   end
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "centos/7"
 
-  config.vm.define "control", primary: true do |h|
+config.vm.define "control", primary: true do |h|
     h.vm.network "private_network", ip: "192.168.135.10"
     h.vm.provision :shell, :inline => <<'EOF'
 
@@ -34,13 +34,11 @@ SSHEOF
 
 chown -R vagrant:vagrant /home/vagrant/.ssh/
 EOF
-  end
-
+  end 
+ 
   config.vm.define "lb01" do |h|
     h.vm.network "private_network", ip: "192.168.135.101"
     h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
-    h.vm.provision :shell, inline: 'useradd ansible'
-    h.vm.provision :shell, inline: 'echo "ansible	ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers'
   end
 
   config.vm.define "app01" do |h|
