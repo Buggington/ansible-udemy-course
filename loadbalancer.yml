@@ -9,10 +9,14 @@
       service: name=nginx state=started enabled=yes
 
     - name: Configure Nginx 2 backend
-      template: src=template/nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644
+      template: src=nginx.conf.j2 dest=/etc/nginx/sites-available/demo mode=0644
       notify:  restart nginx
 
-    - name: Activate nginx backend
+    - name: Deactivate old nginx backend
+      file: path=/etc/nginx/sites-available/default state=absent mode=0644
+      notify: restart nginx
+    
+    - name: Activate new nginx backend
       file: src=/etc/nginx/sites-available/demo dest=/etc/nginx/sites-enabled/demo state=link mode=0644
       notify: restart nginx
 
