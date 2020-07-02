@@ -1,0 +1,17 @@
+---
+# tasks file for demo-app-server
+    - name: copy demo app
+      copy: src=/vagrant/demo/app/ dest=/var/www/demo mode=0755
+      notify: restart apache2
+
+    - name: install python app
+      pip: requirements=/var/www/demo/requirements.txt virtualenv=/var/www/demo/.venv
+      notify: restart apache2
+
+    - name: copy apache config file
+      copy: src=/vagrant/demo/demo.conf dest=/etc/apache2/sites-available mode=0755
+      notify: restart apache2
+
+    - name: activate demo apache site
+      file: src=/etc/apache2/sites-available/demo.conf dest=/etc/apache2/sites-enabled/demo.conf state=link
+      notify: restart apache2
