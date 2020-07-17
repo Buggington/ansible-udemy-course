@@ -1,5 +1,4 @@
 ---
 # handlers file for demo-app-server
-  handlers:
     - name: restart apache2
       service: name=apache2 state=restarted

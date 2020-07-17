@@ -1,7 +1,16 @@
 ---
 # tasks file for demo-app-server
+    - name: install apache2
+      apt: name={{item}} state=present
+      with_items:
+        - apache2
+        - libapache2-mod-wsgi 
+        - python-pip 
+        - python-virtualenv 
+        - python-mysqldb
+    
     - name: copy demo app
-      copy: src=/vagrant/demo/app/ dest=/var/www/demo mode=0755
+      copy: src=demo/app/ dest=demo mode=0755
       notify: restart apache2
 
     - name: install python app

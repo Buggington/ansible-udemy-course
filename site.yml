@@ -1,0 +1,5 @@
+---
+- include: control-roled.yml
+- include: database-roled.yml
+- include: webserver-roled.yml
+- include: loadbalancer-roled.yml

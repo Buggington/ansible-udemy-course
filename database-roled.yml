@@ -2,4 +2,4 @@
 - hosts: database
   become: true
   roles:
-    - database
+    - { role: database, db_name: demo, db_user: demo, db_user_pass: demo, db_user_host: '%' }

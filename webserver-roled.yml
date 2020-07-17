@@ -2,5 +2,5 @@
 - hosts: webserver
   become: true
   roles:
-    - nginx
+    - demo-app-server
     - apache

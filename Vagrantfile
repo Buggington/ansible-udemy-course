@@ -47,7 +47,6 @@ EOF
     h.vm.network "private_network", ip: "192.168.135.111"
     h.vm.hostname = "app01"
     h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
-    h.vm.provision :shell, inline: 'cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys'
   end
 
   config.vm.define "app02" do |h|
